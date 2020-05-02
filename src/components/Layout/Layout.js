@@ -1,7 +1,13 @@
-imor
+import React from 'react';
 
-const Layout = () => {
+import Aux from '../../hoc/Auxiliary';
+const layout = (props) => (
+    <Aux>
+        <div>Toolbar, SideDrawer, Backdrop...</div>
+        <div>
+            {props.children}
+        </div>
+    </Aux>
+);
 
-};
-
-export default Layout;
+export default layout;
