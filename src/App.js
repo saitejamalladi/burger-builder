@@ -1,17 +1,15 @@
 import React from 'react';
-import './App.css';
+import classes from './App.module.css';
 
 import Layout from './hoc/Layout/Layout';
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
 
-function App() {
-  return (
-    <div className="App">
-      <Layout>
-        <BurgerBuilder />
-      </Layout>
-    </div>
-  );
-}
+const app = (props) => (
+  <div className={classes.App}>
+    <Layout>
+      <BurgerBuilder />
+    </Layout>
+  </div>
+);
 
-export default App;
+export default app;
