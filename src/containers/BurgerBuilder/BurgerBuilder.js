@@ -7,7 +7,7 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
-import axios from '../../axios';
+import axios from '../../axios-orders';
 
 const INGREDIENT_PRICES = {
 	meat: 1.30,
@@ -81,34 +81,19 @@ class BurgerBuilder extends Component {
 	cancelPurchaseHandler = () => {
 		this.setState({purchasing: false});
 	};
-	buttonClicked = () => {
-		console.log('button clicked');
-	};
-	purchaseContinueHandler = async () => {
-		this.setState({ loading: true });
-		try {
-			const order = {
-				ingredients: this.state.ingredients,
-				price: this.state.totalPrice,
-				customer: {
-					name: 'Sai Teja Malladi',
-					address: {
-						'street': 'Satya Deva Nagar',
-						'city': 'Annavaram',
-						'pincode': "533406"
-					},
-					email: 'saiteja.malladi@gmail.com'
-				},
-				deliveryMethod: 'fastest'
-			};
-			this.setState({ loading: true });
-			await axios.post('/orders.json', order);
-			this.setState({ loading: false });
-			this.setState({purchasing: false});
-		} catch (error) {
-			this.setState({ loading: false });
-			console.log('Unable to post the request');
+
+	purchaseContinueHandler = () => {
+		const queryParams = [];
+		for(let key in this.state.ingredients) {
+			queryParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(this.state.ingredients[key]));
 		}
+		queryParams.push(encodeURIComponent('price') + '=' + encodeURIComponent(this.state.totalPrice));
+		let queryString=queryParams.join('&');
+		this.props.history.push({
+			pathname: 'checkout',
+			search: '?' + queryString
+		});
+
 	};
 	purchaseCancelHandler = () => {
 		this.setState({purchasing: false});
@@ -154,8 +139,7 @@ class BurgerBuilder extends Component {
 			<Aux>
 				{burger}
 				<Modal show={this.state.purchasing}
-				       modelClosed={this.cancelPurchaseHandler}
-				       selected={this.buttonClicked}>
+				       modelClosed={this.cancelPurchaseHandler}>
 					{orderSummary}
 				</Modal>
 			</Aux>
