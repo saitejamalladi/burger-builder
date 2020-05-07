@@ -93,7 +93,6 @@ class BurgerBuilder extends Component {
 			pathname: 'checkout',
 			search: '?' + queryString
 		});
-
 	};
 	purchaseCancelHandler = () => {
 		this.setState({purchasing: false});
