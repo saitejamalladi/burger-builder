@@ -9,22 +9,16 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import axios from '../../axios-orders';
-import * as actions from '../../store/actions';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
 	state = {
 		purchasing: false,
-		loading: false,
-		error: false
+		loading: false
 	};
 
 	componentDidMount = async () => {
-		try {
-			let response = await axios.get('/ingredients.json');
-			this.setState({ingredients: response.data});
-		} catch (error) {
-			this.setState({error: error});
-		}
+		this.props.onInitIngredients();
 	};
 
 	updatePurchasableFlag(ingredients) {
@@ -60,7 +54,7 @@ class BurgerBuilder extends Component {
 			orderSummary = <Spinner/>;
 		}
 		let burger = <Spinner/>;
-		if (this.state.error) {
+		if (this.props.error) {
 			burger = <p>Ingredients can`t be added</p>;
 		}
 		if (this.props.ings) {
@@ -98,14 +92,18 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
 	return {
-		ings: state.ingredients,
-		price: state.price
+		ings: state.burgerBuilder.ingredients,
+		price: state.burgerBuilder.price,
+		error: state.burgerBuilder.error
+
 	}
 };
 const mapDispatchToProps = dispatch => {
 	return {
-		onAddIngredients: (ingtype) => dispatch({type: actions.ADD_INGREDIENTS, ingType: ingtype}),
-		onRemoveIngredients: (ingtype) => dispatch({type: actions.REMOVE_INGREDIENTS, ingType: ingtype})
+		onAddIngredients: (ingredientName) => dispatch(actions.addIngredients(ingredientName)),
+		onRemoveIngredients: (ingredientName) => dispatch(actions.removeIngredients(ingredientName)),
+		onInitIngredients: () => dispatch(actions.initIngredients())
+
 	}
 };
 
