@@ -93,7 +93,7 @@ class ContactData extends Component {
 		},
 		formIsValid: false,
 		loading: false
-	}
+	};
 
 	orderHandler = ( event ) => {
 		event.preventDefault();
