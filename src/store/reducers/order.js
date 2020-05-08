@@ -8,22 +8,22 @@ const initialState = {
 };
 
 const purchaseBurgerStart = (state, action) => {
-	return updatedObj(...state, {loading: true, purchased: false});
+	return updatedObj(state, {loading: true, purchased: false});
 };
 const purchaseBurgerSuccess = (state, action) => {
-	return updatedObj(...state, {loading: false, purchased: true});
+	return updatedObj(state, {loading: false, purchased: true});
 };
 const purchaseBurgerFailed = (state, action) => {
-	return updatedObj(...state, {loading: false});
+	return updatedObj(state, {loading: false});
 };
 const fetchOrdersStart = (state, action) => {
-	return updatedObj(...state, {loading: true});
+	return updatedObj(state, {loading: true});
 };
 const fetchOrdersSuccess = (state, action) => {
-	return updatedObj(...state, {loading: false, orders: action.orders});
+	return updatedObj(state, {loading: false, orders: action.orders});
 };
 const fetchOrdersFailed = (state, action) => {
-	return updatedObj(...state, {loading: false});
+	return updatedObj(state, {loading: false});
 };
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
