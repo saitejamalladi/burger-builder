@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
-import axios from '../../../axios-orders';
+import axios from '../../../adapter/axios-orders';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from "../../../hoc/WithErrorHandler/WithErrorHandler";
-import * as actions from '../../../store/actions/index';
+import * as actions from '../../../store/actions';
 import {Redirect} from "react-router-dom";
 
 class ContactData extends Component {
@@ -106,9 +106,10 @@ class ContactData extends Component {
 		const order = {
 			ingredients: this.props.ings,
 			price: this.props.price,
-			orderData: formData
+			orderData: formData,
+			userId: this.props.userId
 		};
-		this.props.onOrderBurger(order);
+		this.props.onOrderBurger(order, this.props.token);
 	};
 
 	checkValidity(value, rules) {
@@ -205,13 +206,15 @@ const mapStateToProps = state => {
 		ings: state.burgerBuilder.ingredients,
 		price: state.burgerBuilder.price,
 		loading: state.order.loading,
-		purchased: state.order.purchased
+		purchased: state.order.purchased,
+		token: state.auth.token,
+		userId: state.auth.userId
 	}
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
+		onOrderBurger: (orderData, token) => dispatch(actions.purchaseBurger(orderData, token))
 	}
 };
 

@@ -1,15 +1,15 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
 import Order from '../../components/Order/Order';
-import axios from '../../axios-orders';
+import axios from '../../adapter/axios-orders';
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/WithErrorHandler/WithErrorHandler";
-import * as actions from '../../store/actions/index';
+import * as actions from '../../store/actions';
 
 class Orders extends Component {
 
 	componentDidMount = async () => {
-		this.props.fetchOrders();
+		this.props.fetchOrders(this.props.token);
 	};
 
 	render() {
@@ -35,12 +35,13 @@ class Orders extends Component {
 const mapStateToProps = state => {
 	return {
 		orders: state.order.orders,
-		loading: state.order.loading
+		loading: state.order.loading,
+		token: state.auth.token
 	}
 };
 const mapDispatchToProps = dispatch => {
 	return {
-		fetchOrders: () => dispatch(actions.fetchOrders())
+		fetchOrders: (token) => dispatch(actions.fetchOrders(token))
 	}
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));

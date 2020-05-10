@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updatedObj } from '../Utility';
+import { updatedObj } from '../../shared/Utility';
 const INGREDIENT_PRICES = {
 	meat: 1.30,
 	cheese: 0.7,
